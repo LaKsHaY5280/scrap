@@ -1,9 +1,8 @@
 import streamlit as st
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.chrome.options import Options
-import undetected_chromedriver as uc  # Replace selenium with undetected_chromedriver
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from sqlalchemy import create_engine, Column, String, Integer, MetaData, Table, insert, text
 from sqlalchemy.orm import sessionmaker
 import pandas as pd
@@ -68,36 +67,24 @@ scholarships_data = Table(
 
 metadata.create_all(engine)
 
-# # Setup ChromeDriver
-# def init_driver():
-#     chrome_options = Options()
-#     chrome_options.add_argument("--headless")  # Run in headless mode
-#     chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Anti-bot
-#     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-#     chrome_options.add_experimental_option('useAutomationExtension', False)
-
-#     # Set your ChromeDriver path
-#     chrome_driver_path = "D:/ABYSS/CODE/PY/SCRAPING/scrap/chromedriver.exe"
-#     service = Service(executable_path=chrome_driver_path)
-#     driver = webdriver.Chrome(service=service, options=chrome_options)
-
-#     # Hide WebDriver flag
-#     driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-#         "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
-#     })
-    
-#     return driver
-
-# # Initialize WebDriver
-# if 'driver' not in st.session_state:
-#     st.session_state.driver = init_driver()
-
-# driver = st.session_state.driver
-
-# Setup ChromeDriver using undetected_chromedriver
+# Setup ChromeDriver
 def init_driver():
-    # Initialize undetected ChromeDriver
-    driver = uc.Chrome(headless=True)  # Headless mode for deployment
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Anti-bot
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+
+    # Set your ChromeDriver path
+    chrome_driver_path = "D:/ABYSS/CODE/PY/SCRAPING/scrap/chromedriver.exe"
+    service = Service(executable_path=chrome_driver_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+
+    # Hide WebDriver flag
+    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+        "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+    })
+    
     return driver
 
 # Initialize WebDriver
@@ -149,7 +136,7 @@ def scrape_youtube_videos(search_query, user_id):
         driver.execute_script("window.scrollBy(0, 1000);")
         time.sleep(random.uniform(1, 2))
     
-    video_titles = driver.find_elements(uc.By.XPATH, '//a[@id="video-title"]')
+    video_titles = driver.find_elements(By.XPATH, '//a[@id="video-title"]')
     data = []
     
     for title in video_titles[:10]:
@@ -164,8 +151,8 @@ def scrape_blogs(search_query, user_id):
     driver.get(f"https://www.google.com/search?q={search_query}+blog")
     time.sleep(random.uniform(2, 5))
     
-    results = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//h3')
-    links = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//a')
+    results = driver.find_elements(By.XPATH, '//div[@class="g"]//h3')
+    links = driver.find_elements(By.XPATH, '//div[@class="g"]//a')
     
     data = []
     for i in range(min(10, len(results))):
@@ -180,8 +167,8 @@ def scrape_websites(search_query, user_id):
     driver.get(f"https://www.google.com/search?q={search_query}+website")
     time.sleep(random.uniform(2, 5))
 
-    results = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//h3')
-    links = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//a')
+    results = driver.find_elements(By.XPATH, '//div[@class="g"]//h3')
+    links = driver.find_elements(By.XPATH, '//div[@class="g"]//a')
 
     data = []
     for i in range(min(10, len(results))):
@@ -196,8 +183,8 @@ def scrape_scholarships(search_query, user_id):
     driver.get(f"https://www.google.com/search?q={search_query}+scholarship")
     time.sleep(random.uniform(2, 5))
 
-    results = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//h3')
-    links = driver.find_elements(uc.By.XPATH, '//div[@class="g"]//a')
+    results = driver.find_elements(By.XPATH, '//div[@class="g"]//h3')
+    links = driver.find_elements(By.XPATH, '//div[@class="g"]//a')
 
     data = []
     for i in range(min(10, len(results))):
