@@ -1,3 +1,14 @@
 sXbanPwEfN51v7ef
 
 postgresql://postgres.brqkzxsrbufimcytlind:sXbanPwEfN51v7ef@aws-0-ap-south-1.pooler.supabase.com:5432/postgres
+
+
+
+postgresql://postgres.mqilfnfcwwfwjekpmqrm:sXbanPwEfN51v7ef@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
+
+
+    # Path to your ChromeDriver
+    chrome_driver_path = "D:\ABYSS\CODE\PY\SCRAPING\scrap\chromedriver.exe"
+
+    # Path to your Chrome binary (make sure this path is correct)
+    chrome_binary_path = "C:/Program Files/Google/Chrome/Application/chrome.exe"
